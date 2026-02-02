@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float xClampRange = 5f;
     [SerializeField] float yClampRange = 5f;
 
+    [SerializeField] float controlPitchFactor = 18f;
     [SerializeField] float controlRollFactor = 20f;
     [SerializeField] float rotationSpeed = 10f;
 
@@ -38,7 +39,10 @@ public class PlayerMovement : MonoBehaviour
 
     void ProcessRotation()
     {
-        Quaternion targetRotation = Quaternion.Euler(0f, 0f, -controlRollFactor * movement.x);
+        float pitch = -controlPitchFactor * movement.y;
+        float roll = -controlRollFactor * movement.x;
+
+        Quaternion targetRotation = Quaternion.Euler(pitch, 0f, roll);
 
         // Quaternion.Lerp(a, b, t): a에서 b로 t만큼의 비율로 부드럽게 회전 (Linear Interpolation)
         transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, rotationSpeed * Time.deltaTime);
